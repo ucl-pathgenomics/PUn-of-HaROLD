@@ -204,7 +204,7 @@ for r_num_haplo in range(2,7):#, runvars['max-haplo']):
 
     # run shell script to start job
     command =  str(runvars['command']) + " " + path_curr + "/init.sh" # calls the shell file
-    #os.system(command)
+    os.system(command)
     
     r_time = 0
     while has_haplo_finished(r_num_haplo, r_alphafrac, path_curr) == False:
@@ -268,7 +268,7 @@ for r_num_haplo in range(2,7):#, runvars['max-haplo']):
 
                 create_harold_script(r_num_haplo, r_alphafrac, path_curr, path_proj, runvars, file_bam, refinebestharold)
                 command =  str(runvars['command']) + " " + path_curr + "/init.sh" # calls the shell file
-
+                os.system(command)
                 #refinement could take 48hours + ,so at this point kill the python script 
                 next
             print("all refinement files submitted in paralell")
