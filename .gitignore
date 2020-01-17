@@ -1,0 +1,8 @@
+/01_bam/
+01_bam
+01_bam/
+*.bam
+*.sam
+
+oscar_run.txt
+harold_example.sh

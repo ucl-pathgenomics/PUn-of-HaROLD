@@ -1,5 +1,4 @@
 # PUN of HaROLD - Pretty Useful ruNtime of HaROLD
-# I AM HaROLD - Intuitive AutoMation for HaROLD
 # 
 #####
 # author:   Oscar Charles - github:ojcharles
@@ -85,7 +84,7 @@ def create_strandcount_filelist():
     outfile = os.path.join(path_proj, "02_strandcount", "filelist.txt")
     with open(infile, "r") as f:
         #print(f.read())
-        newText=f.read().replace('.bam', 'strandcount.csv')
+        newText=f.read().replace('.bam', '.strandcount.csv')
         print(newText)
     with open(outfile, "w") as f:
         f.write(newText) 
