@@ -84,7 +84,7 @@ def create_strandcount_filelist():
     outfile = os.path.join(path_proj, "02_strandcount", "filelist.txt")
     with open(infile, "r") as f:
         #print(f.read())
-        newText=f.read().replace('.bam', '.strandcount.csv')
+        newText=f.read().replace('.bam', '_ready.strandcount.csv')
         print(newText)
     with open(outfile, "w") as f:
         f.write(newText) 
@@ -194,11 +194,13 @@ for r_num_haplo in range(2,7):#, runvars['max-haplo']):
     # create folder for run and copy files
     if os.path.exists(path_curr) == False:
         os.mkdir(path_curr)
+        os.mkdir(path_curr+"/out")
+        os.mkdir(path_curr+"/error")
     # copy files required for exection
     fromDirectory = path_proj+"/02_strandcount"
     toDirectory = path_curr
     copy_tree(fromDirectory, toDirectory)
-    runvars['threads'] = len(glob(fromDirectory+"\*"))
+    runvars['threads'] = len(glob(fromDirectory+"/*.csv"))
     create_harold_script(r_num_haplo, r_alphafrac, path_curr, path_proj, runvars, " ", " ")
 
     # run shell script to start job
@@ -209,11 +211,11 @@ for r_num_haplo in range(2,7):#, runvars['max-haplo']):
     while has_haplo_finished(r_num_haplo, r_alphafrac, path_curr) == False:
         #print("waiting for Harold to finish")
         r_wait = 5 # seconds
-        time.sleep(5) # add to top as instruction?
+        time.sleep(60) # add to top as instruction?
         r_time = r_time + r_wait
         pass
     print("process took "+str(r_time/60)+" minutes to complete")
-    #time.sleep(20) # allow any connections to close
+    time.sleep(60) # allow any connections to close
     
     # clean up frequency crate dataframe - to query for best haplo
     LL = formatHaploFreqOutput(path_curr) #creates file & returns LL for run
@@ -246,6 +248,8 @@ for r_num_haplo in range(2,7):#, runvars['max-haplo']):
             path_curr = path_curr = path_proj+"/refinement"
             if os.path.exists(path_curr) == False:
                 os.mkdir(path_curr)
+                os.mkdir(path_curr+"/out")
+                os.mkdir(path_curr+"/error")
             out_best_haplo = int(df_LL.max()[0])
             # plotting regression line - saves png
             plot_regression_line(np.array(df_LL[["num_haplo"]]), np.array(df_LL[["LL"]]), b, 'LogLikelihood_all.png') #why two?

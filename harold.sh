@@ -1,12 +1,4 @@
-    # pipeline for pun of harold using cluster
-# a template for replacing items with varables
 
-mkdir ${dir_curr}/out
-mkdir ${dir_curr}/error
-
-################## pipeline #################
-
-    echo "
 #!/bin/bash -l
 #$ -S /bin/bash
 #$ -o ${dir_curr}/out
@@ -18,6 +10,8 @@ mkdir ${dir_curr}/error
 #$ -V
 #$ -R y
 
+
+
 ### activate conda
 source ${conda_activate_loc} ${conda_env}
 
@@ -27,9 +21,4 @@ ${v_java} -jar ${dir_harold}/HAROLD/Cluster_RG/dist/Cluster_RG.jar --count-file 
 
 ### end of script messages
 echo "********************************* SCRIPT COMPLETED *********************************"
-
-
- " > ${dir_curr}/init.sh
-
-     ${command} ${dir_curr}/init.sh
 
