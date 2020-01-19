@@ -1,0 +1,34 @@
+#on cs cluster this is how you install a new env in oscars dir
+
+#activate conds, to start using conda env ... commmands
+source /share/apps/anaconda/bin/activate
+
+#create a new env from a yml fiale called punofharold
+conda env create -f punofharold.yml --prefix /home/ocharles/.conda/envs/punofharold
+
+
+# activate this conda env
+source activate /home/ocharles/.conda/envs/punofharold
+
+
+
+
+
+
+#example punofharold
+cd /cluster/scratch8b/oscar/punofharold/
+
+###############running
+
+
+#run python - sending all python prints to a log file, in background
+nohup python -u pun_of_harold.py >run.log &
+
+
+#find the program running in nohup, in the background.
+top -u ocharles 
+
+#can then kill if it runs impropperly
+
+kill *PID*
+

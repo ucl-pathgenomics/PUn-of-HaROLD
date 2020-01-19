@@ -40,11 +40,17 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def has_haplo_finished(haplo_num, alphafrac, path_curr):
-    fin_file = glob(path_curr+"/ResultsHaplo.fasta") #list files called haplo sequences as last step 
-    if len(fin_file) == 1:
-        return(True)
+    file = glob(path_curr+"/ResultsHaplo.fasta") #list files called haplo sequences as last step
+    if len(file) == 1: #if file exists
+        fin_file = path_curr+"/ResultsHaplo.fasta"
+        count = len(open(fin_file).readlines())
+        if count > 0:
+            return(True)
+        else:
+            return(False)
     else:
         return(False)
+
 
 def checkfilelist(path_proj):
     filelist = glob(path_proj+"/02_strandcount/*.txt")
@@ -210,8 +216,8 @@ for r_num_haplo in range(2,7):#, runvars['max-haplo']):
     r_time = 0
     while has_haplo_finished(r_num_haplo, r_alphafrac, path_curr) == False:
         #print("waiting for Harold to finish")
-        r_wait = 5 # seconds
-        time.sleep(60) # add to top as instruction?
+        r_wait = 60 # seconds
+        time.sleep(r_wait) # add to top as instruction?
         r_time = r_time + r_wait
         pass
     print("process took "+str(r_time/60)+" minutes to complete")
