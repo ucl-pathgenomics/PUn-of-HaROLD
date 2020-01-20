@@ -17,7 +17,7 @@ source ${conda_activate_loc} ${conda_env}
 
 ### HAROLD
 cd ${dir_curr}/
-${v_java} -jar ${dir_harold}/HAROLD/Cluster_RG/dist/Cluster_RG.jar --count-file ${infile} --haplotypes ${v_haplonum} --alpha-frac ${v_alphafrac} --gamma-cache 10000 -H -L --threads ${v_threadnum} ${init_freq} > ${dir_curr}/out/harold_log.txt
+${v_java} -Xms1500m -Xmx11000m -jar ${dir_harold}/HAROLD/Cluster_RG/dist/Cluster_RG.jar --count-file ${infile} --haplotypes ${v_haplonum} --alpha-frac ${v_alphafrac} --gamma-cache 10000 -H -L --threads ${v_threadnum} ${init_freq} > ${dir_curr}/out/harold_log.txt
 
 ### end of script messages
 echo "********************************* SCRIPT COMPLETED *********************************"

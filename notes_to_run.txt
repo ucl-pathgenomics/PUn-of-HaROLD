@@ -25,6 +25,10 @@ cd /cluster/scratch8b/oscar/punofharold/
 nohup python -u pun_of_harold.py >run.log &
 
 
+
+### check and kill process
+
+
 #find the program running in nohup, in the background.
 top -u ocharles 
 
