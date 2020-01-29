@@ -4,5 +4,6 @@
 *.bam
 *.sam
 
-oscar_run.txt
+notes_to_run,txt
 harold_example.sh
+test

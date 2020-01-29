@@ -1,0 +1,21 @@
+*************** Punofharold Started ***************
+Strandcount files not found, producing now.
+Shell script written
+Your job 1839935 ("bam_proc") has been submitted
+writing strandcount files took  27.0 minutes to complete
+Nor-1006352-01_sorted_ready.strandcount.csv
+Nor-1006352-02_sorted_ready.strandcount.csv
+Nor-1006352-03_sorted_ready.strandcount.csv
+Nor-1006352-04_sorted_ready.strandcount.csv
+Nor-1006352-06_sorted_ready.strandcount.csv
+Nor-1006352-07_sorted_ready.strandcount.csv
+
+filelist script written
+** Haplotype Reconstruction **
+haplotypes - 2 // alphafrac - 0.01
+Shell script written
+Your job 1839953 ("noro-h_2") has been submitted
+process took 7.0 minutes to complete
+haplotypes - 3 // alphafrac - 0.01
+Shell script written
+Your job 1839957 ("noro-h_3") has been submitted

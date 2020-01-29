@@ -100,7 +100,7 @@ def create_harold_script(ifile, ofile, numhaplo, alphafrac, path_curr, path_proj
     #create shell script for execution  
     infile = os.path.join(path_proj, ifile) # from path up 1
     outfile = os.path.join(path_curr, ofile)
-    ref_file = glob(os.path.join(path_proj, "01_bam", "*.fasta"))[0]
+    ref_file = glob(os.path.join(path_proj, "01_bam", "*.fa*"))[0]
     with open(infile, "r") as f:
         newText=f.read().replace('${dir_proj}', path_proj)
         newText = newText.replace('${v_haplonum}', str(numhaplo))
@@ -156,42 +156,42 @@ def plot_regression_line(x, y, b, filename):
     #plt.show() 
     plt.savefig('LogLikelihood.png')
 
-def bam2strand(files_bam, path_proj):
-    # this could / should just be one shell script 
-    # as 1 bam file -> bam refined -> strandcount -> diversity - probably have a script already
-    for i in range(len(files_bam)):
-        file_bam = files_bam[i]
-        file_bam_base = os.path.basename(os.path.splitext(file_bam)[0]) #base filename
-        ## make bam file clc like
-        file_clean = str(os.path.splitext(file_bam)[0])+"_ready"+str(os.path.splitext(file_bam)[1])
-        command = "samtools view -h -b -G69 "+str(file_bam)+" | samtools view -h -b -G133 > "+str(file_clean)
-        os.system(command)
-        ## clc like bam file to strandcount
-        # java program will outpuput filename.log and filename.strandcount.csv to path_project need to clean up
-        path_curr = os.path.join(path_proj,"02_strandcount")
-        command = "java -cp 03_dependencies/HAROLD/Cluster_RG/dist/lib/htsjdk-unspecified-SNAPSHOT.jar:03_dependencies/HAROLD/Cluster_RG/dist/lib/picocli-3.6.0.jar:03_dependencies/HAROLD/Cluster_RG/dist/lib/pal-1.5.1.jar:03_dependencies/HAROLD/Cluster_RG/dist/lib/cache2k-all-1.0.2.Final.jar:03_dependencies/HAROLD/Cluster_RG/dist/lib/commons-math3-3.5.jar:03_dependencies/MakeReadCount.jar makereadcount.MakeReadCount " + str(file_clean)
-        os.system(command)
-        os.remove(os.path.join(path_proj , os.path.basename(os.path.splitext(file_clean)[0])+".log")) #dont need this
-        os.rename(os.path.join(path_proj , os.path.basename(os.path.splitext(file_clean)[0])+".strandcount.csv"), os.path.join(path_curr , os.path.basename(os.path.splitext(file_clean)[0])+".strandcount.csv")) #strandcount.csv
-        os.remove(file_clean) # remove very large bam file
+#def bam2strand(files_bam, path_proj):
+#    # this could / should just be one shell script 
+#    # as 1 bam file -> bam refined -> strandcount -> diversity - probably have a script already
+#    for i in range(len(files_bam)):
+#        file_bam = files_bam[i]
+#        file_bam_base = os.path.basename(os.path.splitext(file_bam)[0]) #base filename
+#        ## make bam file clc like
+#        file_clean = str(os.path.splitext(file_bam)[0])+"_ready"+str(os.path.splitext(file_bam)[1])
+#        command = "samtools view -h -b -G69 "+str(file_bam)+" | samtools view -h -b -G133 > "+str(file_clean)
+#        os.system(command)
+#        ## clc like bam file to strandcount
+#        # java program will outpuput filename.log and filename.strandcount.csv to path_project need to clean up
+#        path_curr = os.path.join(path_proj,"02_strandcount")
+#        command = "java -cp 03_dependencies/HAROLD/Cluster_RG/dist/lib/htsjdk-unspecified-SNAPSHOT.jar:03_dependencies/HAROLD/Cluster_RG/dist/lib/picocli-3.6.0.jar:03_dependencies/HAROLD/Cluster_RG/dist/lib/pal-1.5.1.jar:03_dependencies/HAROLD/Cluster_RG/dist/lib/cache2k-all-1.0.2.Final.jar:03_dependencies/HAROLD/Cluster_RG/dist/lib/commons-math3-3.5.jar:03_dependencies/MakeReadCount.jar makereadcount.MakeReadCount " + str(file_clean)
+#        os.system(command)
+#        os.remove(os.path.join(path_proj , os.path.basename(os.path.splitext(file_clean)[0])+".log")) #dont need this
+#        os.rename(os.path.join(path_proj , os.path.basename(os.path.splitext(file_clean)[0])+".strandcount.csv"), os.path.join(path_curr , os.path.basename(os.path.splitext(file_clean)[0])+".strandcount.csv")) #strandcount.csv
+#        os.remove(file_clean) # remove very large bam file
 
 def bam2strand2(files_bam, path_proj):
-ifile = "strandcount.sh"
-ofile = "init_strand.sh"
-runvars['threads'] = 1 # bodge
-create_harold_script(ifile, ofile, 1, 1, path_proj, path_proj, runvars, " ", " ")
-# run shell script to start job
-command =  str(runvars['command']) + " " + os.path.join(path_proj, ofile) # calls the shell file
-os.system(command)
-r_time = 0
-while len(glob(os.path.join(path_proj, "02_strandcount", "*.csv"))) < len(files_bam):
-    #print("waiting for Harold to finish")
-    r_wait = 60 # seconds
-    time.sleep(r_wait) # add to top as instruction?
-    r_time = r_time + r_wait
-    pass
-print("writing strandcount files took  "+str(r_time/60)+" minutes to complete")
-time.sleep(300) # allow any connections to close can take a long tie
+    ifile = "strandcount.sh"
+    ofile = "init_strand.sh"
+    runvars['threads'] = 1 # bodge
+    create_harold_script(ifile, ofile, 1, 1, path_proj, path_proj, runvars, " ", " ")
+    # run shell script to start job
+    command =  str(runvars['command']) + " " + os.path.join(path_proj, ofile) # calls the shell file
+    os.system(command)
+    r_time = 0
+    while len(glob(os.path.join(path_proj, "02_strandcount", "*.csv"))) < len(files_bam):
+        #print("waiting for Harold to finish")
+        r_wait = 60 # seconds
+        time.sleep(r_wait) # add to top as instruction?
+        r_time = r_time + r_wait
+        pass
+    print("writing strandcount files took  "+str(r_time/60)+" minutes to complete")
+    time.sleep(300) # allow any connections to close can take a long tie
 
 
 # *****************************actual process ******************************************
@@ -204,13 +204,13 @@ files_bam = glob(os.path.join(path_proj, "01_bam", '*.bam'))
 files_strand = glob(os.path.join(path_proj, "02_strandcount", "*.csv"))
 if len(files_strand) == 0:
     print("Strandcount files not found, producing now.")
-    bam2strand(files_bam, path_proj)
+    bam2strand2(files_bam, path_proj)
 
 create_strandcount_filelist()
 
 ## haplotype reconstruction ##
 print("** Haplotype Reconstruction **")
-for r_num_haplo in range(4,7):#, runvars['max-haplo']):
+for r_num_haplo in range(2,7):#, runvars['max-haplo']):
     print("haplotypes - "+str(r_num_haplo)+" // alphafrac - "+r_alphafrac)
     # setup
     path_curr = path_proj+"/h"+str(r_num_haplo)+"_a"+r_alphafrac
