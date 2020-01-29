@@ -1,5 +1,5 @@
-CMV-2064_nodups_sorted_diversity.strandcount.csv
-CMV-2066_nodups_sorted_diversity.strandcount.csv
-CMV-2068_nodups_sorted_diversity.strandcount.csv
-CMV-2069_nodups_sorted_diversity.strandcount.csv
-CMV-2071_nodups_sorted_diversity.strandcount.csv
+CMV-2064_nodups_sorted_ready.strandcount.csv
+CMV-2066_nodups_sorted_ready.strandcount.csv
+CMV-2068_nodups_sorted_ready.strandcount.csv
+CMV-2069_nodups_sorted_ready.strandcount.csv
+CMV-2071_nodups_sorted_ready.strandcount.csv

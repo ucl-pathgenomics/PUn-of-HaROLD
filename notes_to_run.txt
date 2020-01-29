@@ -22,7 +22,7 @@ cd /cluster/scratch8b/oscar/punofharold/
 
 
 #run python - sending all python prints to a log file, in background
-nohup python -u pun_of_harold.py >run.log &
+nohup python -u pun_of_harold.py > python.out &
 
 
 
@@ -35,4 +35,39 @@ top -u ocharles
 #can then kill if it runs impropperly
 
 kill *PID*
+
+
+
+##########file handling
+
+#find bam files and copy to folder
+
+find -iname 'A*_nodups_sorted.bam' -exec cp {} pat-4/01_bam/ \;
+
+
+
+
+
+
+
+
+
+
+
+#working for haplotype = 2
+java -jar /cluster/scratch8b/oscar/punofharold/03_dependencies/HAROLD/Cluster_RG/dist/Cluster_RG.jar --count-file /cluster/scratch8b/oscar/punofharold/h2_a0.01/filelist.txt --haplotypes 2 --alpha-frac 0.01 --gamma-cache 10000 -H -L --threads 5  > /cluster/scratch8b/oscar/punofharold/h2_a0.01/out/harold_log.txt
+
+
+
+#cd into a folder with all fasta files, this will change fasta headers to filename except .fasta ending
+for file in *.fasta;
+   do
+       sed -i "s/>.*/${file%%.*}/" "$file" ;
+done
+
+
+
+
+
+
 

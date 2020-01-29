@@ -51,6 +51,7 @@ def has_haplo_finished(haplo_num, alphafrac, path_curr):
     else:
         return(False)
 
+
 def checkfilelist(path_proj):
     filelist = glob(path_proj+"/02_strandcount/*.txt")
     if len(filelist) ==1:
@@ -96,10 +97,10 @@ def create_strandcount_filelist():
         print('filelist script written')
         pass
 
-def create_harold_script(ifile, ofile, numhaplo, alphafrac, path_curr, path_proj, runvars, refinebam, refinebestharold):
+def create_harold_script(numhaplo, alphafrac, path_curr, path_proj, runvars, refinebam, refinebestharold):
     #create shell script for execution  
-    infile = os.path.join(path_proj, ifile) # from path up 1
-    outfile = os.path.join(path_curr, ofile)
+    infile = path_proj + "/harold.sh" # from path up 1
+    outfile = path_curr + "/init.sh"
     ref_file = glob(os.path.join(path_proj, "01_bam", "*.fasta"))[0]
     with open(infile, "r") as f:
         newText=f.read().replace('${dir_proj}', path_proj)
@@ -175,24 +176,6 @@ def bam2strand(files_bam, path_proj):
         os.rename(os.path.join(path_proj , os.path.basename(os.path.splitext(file_clean)[0])+".strandcount.csv"), os.path.join(path_curr , os.path.basename(os.path.splitext(file_clean)[0])+".strandcount.csv")) #strandcount.csv
         os.remove(file_clean) # remove very large bam file
 
-def bam2strand2(files_bam, path_proj):
-ifile = "strandcount.sh"
-ofile = "init_strand.sh"
-runvars['threads'] = 1 # bodge
-create_harold_script(ifile, ofile, 1, 1, path_proj, path_proj, runvars, " ", " ")
-# run shell script to start job
-command =  str(runvars['command']) + " " + os.path.join(path_proj, ofile) # calls the shell file
-os.system(command)
-r_time = 0
-while len(glob(os.path.join(path_proj, "02_strandcount", "*.csv"))) < len(files_bam):
-    #print("waiting for Harold to finish")
-    r_wait = 60 # seconds
-    time.sleep(r_wait) # add to top as instruction?
-    r_time = r_time + r_wait
-    pass
-print("writing strandcount files took  "+str(r_time/60)+" minutes to complete")
-time.sleep(300) # allow any connections to close can take a long tie
-
 
 # *****************************actual process ******************************************
 print("*************** Punofharold Started ***************")
@@ -224,7 +207,7 @@ for r_num_haplo in range(4,7):#, runvars['max-haplo']):
     toDirectory = path_curr
     copy_tree(fromDirectory, toDirectory)
     runvars['threads'] = len(glob(fromDirectory+"/*.csv"))
-    create_harold_script("harold.sh", "init.sh", r_num_haplo, r_alphafrac, path_curr, path_proj, runvars, " ", " ")
+    create_harold_script(r_num_haplo, r_alphafrac, path_curr, path_proj, runvars, " ", " ")
 
     # run shell script to start job
     command =  str(runvars['command']) + " " + path_curr + "/init.sh" # calls the shell file
@@ -292,7 +275,7 @@ for r_num_haplo in range(4,7):#, runvars['max-haplo']):
                 if os.path.exists(path_curr) == False:
                     os.mkdir(path_curr)
 
-                create_harold_script("refine.sh", "ref_init.sh",r_num_haplo, r_alphafrac, path_curr, path_proj, runvars, file_bam, refinebestharold)
+                create_harold_script(r_num_haplo, r_alphafrac, path_curr, path_proj, runvars, file_bam, refinebestharold)
                 command =  str(runvars['command']) + " " + path_curr + "/init.sh" # calls the shell file
                 os.system(command)
                 #refinement could take 48hours + ,so at this point kill the python script 
