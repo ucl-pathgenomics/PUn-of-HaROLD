@@ -3,7 +3,7 @@
 #$ -S /bin/bash
 #$ -o ${dir_curr}/out
 #$ -e ${dir_curr}/error
-#$ -l h_rt=24:00:00
+#$ -l h_rt=62:00:00
 #$ -l tmem=12.9G,h_vmem=12.9G
 #$ -N  noro-h_${v_haplonum}
 #$ -wd ${dir_curr}/

@@ -4,6 +4,5 @@
 *.bam
 *.sam
 
-notes_to_run,txt
-harold_example.sh
+python.out
 test

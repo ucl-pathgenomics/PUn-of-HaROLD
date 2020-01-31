@@ -2,7 +2,7 @@
 #$ -S /bin/bash
 #$ -o ${dir_curr}/out
 #$ -e ${dir_curr}/error
-#$ -l h_rt=64:00:00
+#$ -l h_rt=96:00:00
 #$ -l tmem=12.9G,h_vmem=12.9G
 #$ -N  noro-refine
 #$ -wd ${dir_proj}/
