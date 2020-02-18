@@ -1,46 +1,42 @@
-#on cs cluster this is how you install a new env in oscars dir
+# notes based on UCL cs cluster, probably general
 
-#activate conds, to start using conda env ... commmands
+##### setup
+
+#activate conda, to start using conda env ... commmands
 source /share/apps/anaconda/bin/activate
 
-#create a new env from a yml fiale called punofharold
+#create a new env from a yml file called punofharold
 conda env create -f punofharold.yml --prefix /home/ocharles/.conda/envs/punofharold
-
 
 # activate this conda env
 source activate /home/ocharles/.conda/envs/punofharold
 
 
 
+##### running
+
+# activate conda, run python - sending all python prints to a log file, in background. store pid linux process to dir
+source /share/apps/anaconda/bin/activate
+source activate /home/ocharles/.conda/envs/punofharold
+nohup python -u pun_of_harold.py > python.out 2>&1 &
+echo $! > pid.txt
+#############
 
 
-
-#example punofharold
-cd /cluster/scratch8b/oscar/punofharold/
-
-###############running
-
-
-#run python - sending all python prints to a log file, in background
-nohup python -u pun_of_harold.py > python.out &
-
-
-
+##### admin
 ### check and kill process
 
 
 #find the program running in nohup, in the background.
-top -u ocharles 
+top -u <username>
 
 #can then kill if it runs impropperly
-
-kill *PID*
-
+kill <PIC>
 
 
-##########file handling
 
-#find bam files and copy to folder
+##### file handling
+
 
 find -iname 'A*_nodups_sorted.bam' -exec cp {} pat-4/01_bam/ \;
 
