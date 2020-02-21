@@ -101,7 +101,7 @@ def create_harold_script(numhaplo, alphafrac, path_curr, path_proj, runvars, ref
     #create shell script for execution  
     infile = path_proj + "/harold.sh" # from path up 1
     outfile = path_curr + "/init.sh"
-    ref_file = glob(os.path.join(path_proj, "01_bam", "*.fa"))[0]
+    ref_file = glob(os.path.join(path_proj, "01_bam", "*.fa*"))[0]
     with open(infile, "r") as f:
         newText=f.read().replace('${dir_proj}', path_proj)
         newText = newText.replace('${v_haplonum}', str(numhaplo))
