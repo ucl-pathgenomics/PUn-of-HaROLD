@@ -210,8 +210,9 @@ for r_num_haplo in range(2,7):#, runvars['max-haplo']):
     create_harold_script(r_num_haplo, r_alphafrac, path_curr, path_proj, runvars, " ", " ")
 
     # run shell script to start job
-    command =  str(runvars['command']) + " " + path_curr + "/init.sh" # calls the shell file
-    os.system(command)
+    if has_haplo_finished(r_num_haplo, r_alphafrac, path_curr) == False: # no need to rerun
+        command =  str(runvars['command']) + " " + path_curr + "/init.sh" # calls the shell file
+        os.system(command)
     
     r_time = 0
     while has_haplo_finished(r_num_haplo, r_alphafrac, path_curr) == False:
@@ -232,6 +233,8 @@ for r_num_haplo in range(2,7):#, runvars['max-haplo']):
         df2 = pd.DataFrame([[r_num_haplo,LL]], columns=['num_haplo', 'LL'])
         df_LL = df_LL.append(df2)
         pass
+    print("*"*20+"current LL table"+"*"*20)
+    print(df_LL)
     #print("LL and frequency data cleaned")
 
     # have we plateaued? if so go to refinement, else run with num_haplo ++
